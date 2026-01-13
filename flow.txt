@@ -1,0 +1,10 @@
+1.create template.py adn add he project template to it
+2.complete setup.py and pyproject.toml to import local packages
+3.create a new virtual environment then activate it and download all the required modules form requirements.txt
+    -(code to create a env is conda create -n vehicle python=3.10 -y)
+    -(then activate command is conda activate vehicle)
+4.code to download all the modules from requirements.txt is"pip install -r requirements.txt"
+5.to see all the modules code is ="pip list"
+
+_____mongoDB setup_____
+6.
