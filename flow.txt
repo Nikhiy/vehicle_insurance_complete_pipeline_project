@@ -23,4 +23,8 @@ ______logging,exception and notebooks____________
 15.write exception file and test on same demo.py
 16add eda and feature engineering notebooks
 
-___________
+___________ Data ingestion ______________
+17.before we start data ingestion we first finish declaring all the variables in constants/init.py file
+17_1.add code to configuration/mongo_db_connection.py by defining the func for mongodb connection
+17_2.inside data_access file add code to proj1_data.py hwich uses mongo_db_connection.py
+17_3.
