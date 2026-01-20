@@ -47,7 +47,7 @@ class Proj1Data():
             df=pd.DataFrame(list(collection.find()))
             print(f"data fetched with len{len(df)}")
             if id in df.columns.to_list():
-                df.drop(["id"],axis=1)
+                df.drop(["_id"],axis=1)
             df.replace({"na":np.nan},inplace=True)
             return df
         except Exception as e:
