@@ -38,6 +38,7 @@ class DataIngestion:#this constructor means that data_ingestion_config this is o
             dir_path=os.path.dirname(feature_store_file_path)
             os.makedirs(dir_path,exist_ok=True)
             dataframe.drop(columns=['_id'],axis=1,inplace=True,errors="ignore")
+            dataframe.drop(columns=['id'],axis=1,inplace=True,errors="ignore")
             logging.info(f"Saving exported data into feature store file path: {feature_store_file_path}")
             dataframe.to_csv(feature_store_file_path,index=False,header=True)
             return dataframe
