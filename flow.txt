@@ -78,3 +78,6 @@ add code to entity.config_entity.py file till DataIngestionConfig class >>
 
 24. Now start work on "Model Evaluation" and "Model Pusher" component.
 
+25. finish the code of "Prediction Pipeline" and setup my app.py
+26. Add "static" and "template" dir to the project.
+

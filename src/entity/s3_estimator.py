@@ -3,7 +3,7 @@ import sys
 from src.exception import MyException
 from src.entity.estimator import MyModel
 from pandas import DataFrame
-
+from src.constants import MODEL_FILE_NAME
 class Proj1Estimator:
     """this class is used to save and retrive our model from s3 bucket ans to do prediction"""
 
@@ -29,7 +29,7 @@ class Proj1Estimator:
         Load the model from the model_path
         :return:
         """
-        return self.s3.load_model(self.model_path,bucket_name=self.bucket_name)
+        return self.s3.load_model(model_name=MODEL_FILE_NAME,model_dir=self.model_path,bucket_name=self.bucket_name)
     
     def save_model(self,from_file,remove:bool=False)->None:
         """
