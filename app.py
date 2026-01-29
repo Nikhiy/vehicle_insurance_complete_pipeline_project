@@ -109,7 +109,7 @@ async def predictRouteClient(request: Request):
                                 )
 
         # Convert form data into a DataFrame for the model
-        vehicle_df = vehicle_data.vehicle_data_input_data_frame()
+        vehicle_df = vehicle_data.get_vehicle_input_data_frame()
 
         # Initialize the prediction pipeline
         model_predictor = VehicleDataClassifier()
