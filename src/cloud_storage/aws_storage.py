@@ -104,8 +104,9 @@ class SimpleStorageService:
         try:
             bucket = self.get_bucket(bucket_name)
             file_objects = [file_object for file_object in bucket.objects.filter(Prefix=filename)]
-            func = lambda x: x[0] if len(x) == 1 else x
-            file_objs = func(file_objects)
+            if len(file_objects) == 0:
+                raise Exception(f"No file found in bucket with prefix: {filename}")
+            file_objs = file_objects[0]
             logging.info("Exited the get_file_object method of SimpleStorageService class")
             return file_objs
         except Exception as e:
