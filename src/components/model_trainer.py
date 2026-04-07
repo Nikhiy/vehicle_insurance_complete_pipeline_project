@@ -7,6 +7,7 @@ from src.exception import MyException
 from src.logger import logging
 from src.entity.config_entity import ModelTrainerConfig
 from src.entity.artifact_entity import ModelTrainerArtifact,DataTransformationArrifact,ClassificationMetricArtifact
+
 from src.entity.estimator import MyModel
 from src.utils.main_utils import load_numpy_array_data,load_object,save_object
 from src.entity.estimator import MyModel
