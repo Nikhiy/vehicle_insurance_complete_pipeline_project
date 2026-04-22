@@ -1,11 +1,9 @@
 pipeline {
     agent any
-
     environment {
-        IMAGE_NAME = 'nikhiy/vehicle-insurance:latest'
+        IMAGE_NAME = 'nikhiy/vehicle-insurance:latest'  // Your Docker Hub repo
         DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials')
     }
-
     stages {
         stage('Lint/Test') {
             agent {
@@ -21,20 +19,18 @@ pipeline {
                 sh 'pytest src/ || true'
             }
         }
-
         stage('Build Docker') {
             steps {
                 sh 'docker build -t $IMAGE_NAME .'
+                sh 'docker tag $IMAGE_NAME $IMAGE_NAME'
             }
         }
-
         stage('Push') {
             steps {
                 sh 'echo $DOCKER_HUB_CREDENTIALS_PSW | docker login -u $DOCKER_HUB_CREDENTIALS_USR --password-stdin'
                 sh 'docker push $IMAGE_NAME'
             }
         }
-
         stage('Deploy') {
             when { branch 'main' }
             steps {
@@ -44,12 +40,10 @@ pipeline {
             }
         }
     }
-
     post {
         always {
-            script {
-                sh 'docker logout || true'
-            }
+            sh 'docker logout || true'
         }
     }
 }
+
