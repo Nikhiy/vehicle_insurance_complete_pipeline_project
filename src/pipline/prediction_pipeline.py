@@ -1,6 +1,7 @@
 import sys
 from src.entity.config_entity import VehiclePredictorConfig
-from src.entity.s3_estimator import Proj1Estimator
+# Removed AWS S3Estimator - using local load_object
+
 from src.exception import MyException
 from src.logger import logging
 from pandas import DataFrame
@@ -82,29 +83,23 @@ class VehicleData:
             raise MyException(e, sys) from e
 
 class VehicleDataClassifier:
-    def __init__(self,prediction_pipeline_config: VehiclePredictorConfig = VehiclePredictorConfig(),) -> None:
-        """
-        :param prediction_pipeline_config: Configuration for prediction the value
-        """
-        try:
-            self.prediction_pipeline_config = prediction_pipeline_config
-        except Exception as e:
-            raise MyException(e, sys)
+    def __init__(self, prediction_pipeline_config: VehiclePredictorConfig = VehiclePredictorConfig()):
+        self.prediction_pipeline_config = prediction_pipeline_config
 
-    def predict(self, dataframe) -> str:
+    def predict(self, dataframe):
         """
-        This is the method of VehicleDataClassifier
-        Returns: Prediction in string format
+        Predict using local saved model.
         """
         try:
             logging.info("Entered predict method of VehicleDataClassifier class")
-            model = Proj1Estimator(
-                bucket_name=self.prediction_pipeline_config.model_bucket_name,
-                model_path=self.prediction_pipeline_config.model_file_path,
-            )
-            result =  model.predict(dataframe)
-            
+            model_path = self.prediction_pipeline_config.model_file_path
+            import os
+            import sys
+            from src.utils.main_utils import load_object
+            if not os.path.exists(model_path):
+                raise MyException(f"Model not found at {model_path}. Run /train first.", sys)
+            model = load_object(file_path=model_path)
+            result = model.predict(dataframe)
             return result
-        
         except Exception as e:
             raise MyException(e, sys)

@@ -114,38 +114,34 @@ Welcome to this MLOps project, designed to demonstrate a robust pipeline for man
 
 ---
 
-## 🔄 CI/CD Setup with Docker, GitHub Actions, and AWS
+## 🔄 CI/CD Setup with Docker and Jenkins
 
-### Step 16: Docker and GitHub Actions
+### Jenkins Setup
+1. Install Jenkins on local/VM: `docker run -p 8080:8080 jenkins/jenkins:lts`
+2. Add credentials: Docker Hub (ID: 'docker-hub-credentials').
+3. Create pipeline job, point to Jenkinsfile.
+4. Set env `MONGODB_URL`.
+
+### Step 16: Docker
 1. Create `Dockerfile` and `.dockerignore`.
-2. Set up GitHub Actions with AWS authentication by creating secrets in GitHub for:
-   - `AWS_ACCESS_KEY_ID`
-   - `AWS_SECRET_ACCESS_KEY`
-   - `AWS_DEFAULT_REGION`
-   - `ECR_REPO`
 
-### Step 17: AWS EC2 and ECR
-1. Set up an EC2 instance for deployment.
-2. Install Docker on the EC2 machine.
-3. Connect EC2 as a self-hosted runner on GitHub.
-
-### Step 18: Final Steps
-1. Open the 5080 port on the EC2 instance.
-2. Access the deployed app by visiting `http://<public_ip>:5080`.
+### Final Steps
+1. Trigger build on push to main.
+2. Run locally: `docker run -p 5000:5000 -e MONGODB_URL=your_url yourimage:latest`
+3. Access `http://localhost:5000`.
 
 ---
 
 ## 🛠️ Additional Resources
-- **Crash Course on setup.py and pyproject.toml**: See `crashcourse.txt` for details.
-- **GitHub Secrets**: Manage secrets for secure CI/CD pipelines.
+- **Crash Course on setup.py and pyproject.toml**: See `crashcourse.txt`.
 
 ---
 
 ## 🎯 Project Workflow Summary
 
 1. **Data Ingestion** ➔ **Data Validation** ➔ **Data Transformation**
-2. **Model Training** ➔ **Model Evaluation** ➔ **Model Deployment**
-3. **CI/CD Automation** with GitHub Actions, Docker, AWS EC2, and ECR
+2. **Model Training** ➔ **Model Evaluation** ➔ **Local Model Save**
+3. **CI/CD Automation** with Jenkins + Docker
 
 ---
 

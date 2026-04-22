@@ -1,4 +1,6 @@
 import sys
+import os
+import sys
 import pandas as pd
 from src.exception import MyException
 from src.logger import logging
@@ -8,7 +10,6 @@ from sklearn.metrics import f1_score
 from src.constants import TARGET_COLUMN
 from src.utils.main_utils import load_object
 from typing import Optional
-from src.entity.s3_estimator import Proj1Estimator
 from dataclasses import dataclass
 
 @dataclass
@@ -23,27 +24,22 @@ class ModelEvaluation:
         try:
             self.model_eval_config=model_eval_config
             self.data_ingestion_artifact=data_ingestion_artifact
-            self.mdodel_trainer_artifact=model_trainer_artifact
+            self.model_trainer_artifact=model_trainer_artifact  # Fixed typo
         except Exception as e:
             raise MyException(e,sys) from e
         
-    def get_best_model(self)->Optional[Proj1Estimator]:
+    def get_best_model(self) -> Optional[object]:
         """
-        Method Name:get_best_model
-        Description:This function is used to get model from production stage.
-        
-        Output     :Returns model object if available in s3 storage
-        On Failure :Write an exception log and then raise an exception
+        Load the current production model from local path if exists.
         """
         try:
-            bucket_name=self.model_eval_config.bucket_name
-            model_path=self.model_eval_config.s3_model_key_path
-            proj1_estimator=Proj1Estimator(bucket_name=bucket_name,model_path=model_path)
-            if proj1_estimator.is_model_present(model_path=model_path):
-                return proj1_estimator
+            model_path = self.model_eval_config.production_model_path
+            if os.path.exists(model_path):
+                return load_object(file_path=model_path)
             return None
         except Exception as e:
             raise MyException(e,sys)
+
         
     def _map_gender_column(self,df):
         """map gender column to 0 for female adn 1 for male"""
@@ -93,9 +89,9 @@ class ModelEvaluation:
             x = self._create_dummy_columns(x)
             x = self._rename_columns(x)
 
-            trained_model=load_object(file_path=self.mdodel_trainer_artifact.trained_model_file_path)
-            logging.info("loaded the best model")
-            trained_model_f1_score=self.mdodel_trainer_artifact.metric_artifact.f1_score
+            trained_model = load_object(file_path=self.model_trainer_artifact.trained_model_file_path)
+            logging.info("loaded the trained model")
+            trained_model_f1_score = self.model_trainer_artifact.metric_artifact.f1_score
             logging.info(f"F1_Score for this model: {trained_model_f1_score}")
 
             best_model_f1_score=None
@@ -103,6 +99,7 @@ class ModelEvaluation:
             if best_model is not None:
                 logging.info("finding f1 score for best model")
                 y_hat_best_model=best_model.predict(x)
+                best_model_f1_score = f1_score(y_true=y, y_pred=y_hat_best_model)
                 logging.info(f"F1_Score-Production Model: {best_model_f1_score}, F1_Score-New Trained Model: {trained_model_f1_score}")
             
             tmp_best_model_score=0 if best_model_f1_score is None else best_model_f1_score
@@ -127,11 +124,10 @@ class ModelEvaluation:
             print("------------------------------------------------------------------------------------------------")
             logging.info("started model evaluation")
             evaluate_model_response=self.evaluate_model()
-            s3_model_path=self.model_eval_config.s3_model_key_path
             model_evaluation_artifact=ModelEvaluationArtifact(
                 is_model_accepted=evaluate_model_response.is_model_accepted,
-                s3_model_path=s3_model_path,
-                trained_model_path=self.mdodel_trainer_artifact.trained_model_file_path,
+                model_path=self.model_eval_config.production_model_path,
+                trained_model_path=self.model_trainer_artifact.trained_model_file_path,
                 changed_accuracy=evaluate_model_response.difference
             )
             logging.info("model_evaluation artifact done")
