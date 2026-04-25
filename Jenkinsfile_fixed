@@ -15,8 +15,8 @@ pipeline {
             steps {
                 sh 'pip install -r requirements.txt'
                 sh 'pip install pylint pytest'
-                sh 'pylint src/ || true'
-                sh 'pytest src/ || true'
+                sh 'pylint src/'
+                sh 'pytest src/ -q'
             }
         }
         stage('Build Docker') {

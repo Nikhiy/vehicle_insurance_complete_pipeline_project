@@ -1,7 +1,7 @@
 import pymongo
 import certifi
 from typing import Optional
-from src.constants import MONGODB_URL_KEY
+from src.constants import DATABASE_NAME, MONGODB_URL_KEY
 from src.exception import MyException
 from src.logger import logging
 import os, sys
