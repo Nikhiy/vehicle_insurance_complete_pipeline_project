@@ -9,11 +9,11 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/Vikas-N-2006/vehicle_insurance_complete_pipeline_project.git'
-            }
-        }
+        // stage('Checkout') {
+        //     steps {
+        //         git 'https://github.com/Vikas-N-2006/vehicle_insurance_complete_pipeline_project.git'
+        //     }
+        // }
 
         stage('Install Dependencies') {
             steps {
