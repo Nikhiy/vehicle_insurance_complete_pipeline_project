@@ -17,3 +17,4 @@ uvicorn
 jinja2
 imblearn
 -e .
+ruff
