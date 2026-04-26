@@ -19,3 +19,4 @@ imblearn
 -e .
 ruff
 pytest
+httpx
