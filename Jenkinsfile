@@ -22,7 +22,11 @@ pipeline {
 
         stage('Install Dependencies') {
             steps {
-                sh 'pip install -r requirements.txt'
+                sh '''
+                pip install --upgrade pip
+                pip install -r requirements.txt --timeout 100 --retries 5 \
+                -i https://pypi.org/simple
+                '''
             }
         }
 
