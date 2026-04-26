@@ -28,7 +28,11 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $DOCKERHUB_USER/$IMAGE_NAME:$IMAGE_TAG .'
+                sh '''
+                docker build -t $DOCKERHUB_USER/$IMAGE_NAME:$IMAGE_TAG .
+                docker tag $DOCKERHUB_USER/$IMAGE_NAME:$IMAGE_TAG $DOCKERHUB_USER/$IMAGE_NAME:latest
+                docker images
+                '''
             }
         }
 
@@ -38,6 +42,7 @@ pipeline {
                     sh '''
                     echo $PASS | docker login -u $USER --password-stdin
                     docker push $DOCKERHUB_USER/$IMAGE_NAME:$IMAGE_TAG
+                    docker push $DOCKERHUB_USER/$IMAGE_NAME:latest
                     '''
                 }
             }
