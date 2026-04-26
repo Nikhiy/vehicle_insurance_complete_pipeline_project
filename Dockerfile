@@ -4,7 +4,8 @@ WORKDIR /app
 
 COPY . /app
 
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip && \
+    pip install -r requirements.txt --timeout 100 --retries 5
 
 EXPOSE 5000
 
