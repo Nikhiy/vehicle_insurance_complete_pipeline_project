@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+    docker {
+        image 'python:3.10'
+        args '-u root:root'
+    }
+}
 
     environment {
         DOCKERHUB_USER = "vikasvikky56"
