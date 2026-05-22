@@ -9,6 +9,17 @@ pipeline {
     }
 
     stages {
+        stage('Clean Workspace') {
+            steps {
+                sh '''
+                rm -rf .pytest_cache
+                rm -rf .ruff_cache
+                rm -rf logs
+                find . -type d -name "__pycache__" -exec rm -rf {} +
+                find . -type d -name "*.egg-info" -exec rm -rf {} +
+                '''
+            }
+        }
 
         stage('Install Dependencies') {
             steps {
@@ -26,18 +37,12 @@ pipeline {
 
                 stage('Lint') {
                     steps {
-                        sh '''
-                        chmod -R 777 .
-                        '''
                         sh 'ruff check . || true'
                     }
                 }
 
                 stage('Tests') {
                     steps {
-                        sh '''
-                        chmod -R 777 .
-                        '''
                         sh 'pytest -q'
                     }
                 }
