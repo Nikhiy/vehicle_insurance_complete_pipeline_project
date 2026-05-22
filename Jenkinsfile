@@ -26,12 +26,18 @@ pipeline {
 
                 stage('Lint') {
                     steps {
+                        sh '''
+                        chmod -R 777 .
+                        '''
                         sh 'ruff check . || true'
                     }
                 }
 
                 stage('Tests') {
                     steps {
+                        sh '''
+                        chmod -R 777 .
+                        '''
                         sh 'pytest -q'
                     }
                 }
