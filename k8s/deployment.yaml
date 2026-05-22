@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: vehicle-insurance
-          image: vikasvikky56/vehicle-insurance:IMAGE_TAG
+          image: vikasvikky56/vehicle-insurance:latest
 
           ports:
             - containerPort: 5000
