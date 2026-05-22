@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vehicle-insurance
+  labels:
+    app: vehicle-insurance
+
+spec:
+  replicas: 2
+
+  selector:
+    matchLabels:
+      app: vehicle-insurance
+
+  template:
+    metadata:
+      labels:
+        app: vehicle-insurance
+
+    spec:
+      containers:
+        - name: vehicle-insurance
+          image: vikasvikky56/vehicle-insurance:IMAGE_TAG
+
+          ports:
+            - containerPort: 5000
+
+          env:
+            - name: MONGODB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: vehicle-insurance-secret
+                  key: MONGODB_URL
+
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+
+          readinessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+
+          livenessProbe:
+            tcpSocket:
+              port: 5000
+            initialDelaySeconds: 30
+            periodSeconds: 20

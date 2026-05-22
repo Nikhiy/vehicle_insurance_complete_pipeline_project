@@ -17,3 +17,6 @@ uvicorn
 jinja2
 imblearn
 -e .
+ruff
+pytest
+httpx

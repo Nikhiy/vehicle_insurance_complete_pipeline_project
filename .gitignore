@@ -146,6 +146,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+vehicle/
 
 # Spyder project settings
 .spyderproject
@@ -211,3 +212,7 @@ __marimo__/
 
 
 artifact/
+
+# Kubernetes local credentials
+k8s/kubeconfig
+k8s/kubeconfig.yaml
