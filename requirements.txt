@@ -10,13 +10,11 @@ from_root
 dill
 certifi
 PyYAML
-
 fastapi
 python-multipart
 uvicorn
 jinja2
 imblearn
--e .
 ruff
 pytest
 httpx

@@ -42,6 +42,9 @@ def configure_logger():
     # ================================
     # FILE HANDLER (LOG FILE)
     # ================================
+    import os
+
+    os.makedirs("logs", exist_ok=True)
 
     file_handler = RotatingFileHandler(
         log_file_path,
