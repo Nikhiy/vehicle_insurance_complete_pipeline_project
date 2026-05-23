@@ -128,6 +128,7 @@ async def predictRouteClient(request: Request):
     name="vehicledata.html",
     context={"context": status}
 )
+ 
         
     except Exception as e:
         return {"status": False, "error": f"{e}"}
