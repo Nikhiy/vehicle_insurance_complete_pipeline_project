@@ -18,7 +18,6 @@ __pycache__/
 *.pyd
 
 
-artifact/
 logs/
 notebook/
 
